@@ -1,0 +1,50 @@
+{
+  "name": "WhatsApp CRM",
+  "description": "WhatsApp CRM",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "permissions": ["activeTab", "scripting", "webRequest", "tabs"],
+  "action": {
+    "default_icon": {
+      "16": "images/whats.png",
+      "24": "images/whats.png",
+      "32": "images/whats.png",
+      "48": "images/whats.png",
+      "128": "images/whats.png"
+    },
+    "default_title": "Whatsapp CRM"
+  },
+  "icons": {
+    "16": "images/whats.png",
+    "24": "images/whats.png",
+    "32": "images/whats.png",
+    "48": "images/whats.png",
+    "128": "images/whats.png"
+  },
+  "host_permissions": ["https://web.whatsapp.com/"],
+  "content_scripts": [{
+    "matches": ["https://web.whatsapp.com/*"],
+    "css": [
+      "lib/bootstrap/css/bootstrap.min.css",
+      "lib/fontawesome/css/all.min.css",
+      "lib/fontawesome/css/regular.min.css",
+      "style.css"
+    ],
+    "js": [
+      "lib/jquery/jquery-3.6.0.min.js",
+      "lib/bootstrap/js/bootstrap.bundle.min.js",
+      "script.js"
+    ]
+  }],
+  "web_accessible_resources": [{
+    "resources": [
+      "index.html",
+      "images/*",
+      "lib/bootstrap/*",
+      "lib/fontawesome/*",
+      "lib/fontawesome/webfonts/*",
+      "lib/jquery/*"
+    ],
+    "matches": [ "https://web.whatsapp.com/*" ]
+  }]
+}

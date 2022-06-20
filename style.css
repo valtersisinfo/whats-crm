@@ -1,0 +1,167 @@
+body {
+  background-color: #083667;
+}
+
+.navbar {
+  background-color: #0b4e92;
+}
+
+.navbar .nav-link {
+  color: #dbdcdf;
+  font-weight: bolder;
+}
+
+.navbar .btn-link {
+  color: #dbdcdf;
+}
+
+.pesquisa {
+  position: relative;
+}
+
+.pesquisa input {
+  padding-right: 25px;
+}
+
+.pesquisa label {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 10;
+  border: none;
+  background: transparent;
+  outline: none;
+}
+
+.whats-crm {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  margin: 0;
+  margin-top: 70px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+}
+
+.whats-crm .d-cards {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+
+.whats-crm .d-cards > .card {
+  margin-right: 1rem;
+  width: 20rem;
+}
+
+.whats-crm .d-cards > .card > .card-body {
+  background-color: #dbdcdf;
+}
+
+.whats-crm .d-cards > .card > .card-body .card-titulo {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.whats-crm .d-cards > .card > .card-body .card-titulo .b-alerta:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.whats-crm .d-cards > .card > .card-body .card-titulo h6 {
+  font-weight: bolder;
+}
+
+.whats-crm .d-cards > .card > .card-body .card-titulo .btn-link {
+  color: #000000;
+}
+
+.whats-crm .d-cards > .card > .card-body .card-titulo .dropdown-menu {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.whats-crm .d-cards > .card > .card-body .card-titulo .dropdown-menu .dropdown-item {
+  background-color: rgba(0, 0, 0, 0.75);
+  border-radius: 5px;
+  color: white;
+  margin-bottom: 2px;
+}
+
+.whats-crm .d-cards > .card > .card-body .card-titulo .dropdown-menu .dropdown-item:hover {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.whats-crm .d-cards > .card > .card-body .d-contatos {
+  height: calc(100vh - 170px);
+  overflow: auto;
+}
+
+.whats-crm .d-cards > .card > .card-body .d-contatos p {
+  margin: 0;
+}
+
+.whats-crm .d-cards > .card > .card-body .d-contatos .d-titulo {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.whats-crm .d-cards > .card > .card-body .d-contatos .d-titulo button {
+  color: #000000;
+}
+
+.whats-crm .d-cards > .card > .card-body .d-contatos .d-titulo img {
+  border-radius: 50%;
+  height: 25px;
+  width: 25px;
+}
+
+.whats-crm .d-cards > .card > .card-body .d-contatos .d-conteudo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.whats-crm .d-cards > .card > .card-body .d-contatos .d-conteudo .p-ultima {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 245px;
+}
+
+.whats-crm .d-cards > .card > .card-body .d-contatos .d-conteudo .p-tempo {
+  font-size: 11px;
+}
+
+.whats-crm .d-cards > .card > .card-body .d-contatos .d-conteudo .b-alerta {
+  display: block;
+  font-size: 11px;
+  padding: 3px 7px;
+}
+
+.whats-crm .d-cards > .card > .card-body .d-contatos .d-conteudo .b-alerta:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+/*# sourceMappingURL=style.css.map */

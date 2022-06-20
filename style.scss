@@ -1,0 +1,153 @@
+$v1: #083667;
+$v2: #0b4e92;
+$v3: #dbdcdf;
+$v4: #000000;
+
+body {
+  background-color: $v1;
+}
+
+.navbar {
+  background-color:$v2 ;
+
+  .nav-link {
+    color: $v3;
+    font-weight: bolder;
+  }
+
+  .btn-link {
+    color: $v3;
+  }
+}
+
+.pesquisa {
+  position: relative;
+
+  input {
+    padding-right: 25px
+  }
+
+  label {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 10;
+    border: none;
+    background: transparent;
+    outline: none;
+  }
+}
+
+.whats-crm {
+  display: inline-flex;
+  margin: 0;
+  margin-top: 70px;
+  width: max-content;
+
+  .d-cards {
+    display: inline-flex;
+
+    > .card {
+      margin-right: 1rem;
+      width: 20rem;
+
+      > .card-body {
+        background-color: $v3;
+        //height: calc(100vh - 110px);
+
+        .card-titulo {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+
+          .b-alerta {
+            &:focus
+            {
+              box-shadow: none;
+            }
+          }
+
+          h6 {
+            font-weight: bolder;
+          }
+
+          .btn-link {
+            color: $v4;
+          }
+
+          .dropdown-menu {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+
+            .dropdown-item {
+              background-color: rgba(0, 0, 0, .75);
+              border-radius: 5px;
+              color: white;
+              margin-bottom: 2px;
+
+              &:hover {
+                cursor: pointer;
+                margin-left: 10px;
+              }
+            }
+          }
+        }
+
+        .d-contatos {
+          height: calc(100vh - 170px);
+          overflow: auto;
+
+          p {
+            margin: 0;
+          }
+
+          .d-titulo {
+
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+
+            button {
+              color: $v4;
+            }
+
+            img {
+              border-radius: 50%;
+              height: 25px;
+              width: 25px;
+            }
+          }
+
+          .d-conteudo
+          {
+            display: flex;
+            justify-content: space-between;
+
+            .p-ultima {
+              font-size: 14px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              width: 245px;
+            }
+
+            .p-tempo {
+              font-size: 11px;
+            }
+
+            .b-alerta {
+              display: block;
+              font-size: 11px;
+              padding: 3px 7px;
+
+              &:focus {
+                box-shadow: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

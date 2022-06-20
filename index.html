@@ -1,0 +1,92 @@
+<nav class="navbar navbar-dark navbar-expand-sm fixed-top">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item me-md-1">
+          <div class="pesquisa">
+            <input id="i-pesquisar" type="text" class="form-control" placeholder="Pesquisar" title="Pesquisar" aria-describedby="pesquisar">
+            <label for="i-pesquisar"><i class="fa fa-search"></i></label>
+          </div>
+        </li>
+        <li class="nav-item me-md-1">
+          <div class="pesquisa">
+            <input id="i-filtrar" type="text" class="form-control" placeholder="Filtrar por tag" title="Filtrar por tag" aria-describedby="filtrar">
+            <label for="i-filtrar"><i class="fa-solid fa-tags"></i></label>
+          </div>
+        </li>
+        <li class="nav-item me-md-1">
+          <button id="b-alerta" type="button" class="btn btn-light">
+            <i class="fa-solid fa-bell"></i>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button id="b-relogio" type="button" class="btn btn-light">
+            <i class="fa-solid fa-clock"></i>
+          </button>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <a class="nav-link" href="#">WhatsApp CRM</a>
+      </ul>
+
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+        <li class="nav-item">
+          <button id="b-chat" type="button" class="btn btn-link">
+            <i class="fas fa-comment-alt"></i>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button id="b-opcoes" type="button" class="btn btn-link">
+            <i class="fas fa-ellipsis-v"></i>
+          </button>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="whats-crm container-fluid">
+
+  <div class="d-cards">
+
+    <div id="d-inbox" class="card lista">
+      <div class="card-body p-1">
+        <div class="card-titulo mb-1">
+          <div>
+            <button id="b-alerta" type="button" class="btn btn-warning b-alerta">
+              <i class="fa-solid fa-bell"></i> <span>2</span>
+            </button>
+          </div>
+          <h6 class="card-title text-center mb-0">Inbox</h6>
+          <button id="b-configuracao" type="button" class="btn btn-link b-configuracao" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-ellipsis"></i>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="b-alerta">
+            <li><a id="a-esconder" onclick="esconder(event)" class="dropdown-item"><i class="fas fa-eye-slash"></i> Esconder todos</a></li>
+            <li><a id="a-mostrar" onclick="mostrar(event)" class="dropdown-item" style="display: none;"><i class="fas fa-eye"></i> Mostrar todos</a></li>
+            <li><a id="a-marcar" onclick="marcar(event)" class="dropdown-item"><i class="fas fa-bell-slash"></i> Marcar todos como lido</a></li>
+          </ul>
+        </div>
+        <div class="d-contatos">
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="d-adicionar">
+    <button id="b-adicionar" type="button" class="btn btn-light">Adicionar Nova Lista</button>
+    <div id="d-salvar" class="input-group mb-3 d-none">
+      <input id="i-salvar" type="text" class="form-control" placeholder="Adicionar Nova Lista" aria-label="Adicionar Nova Lista" aria-describedby="button-addon2">
+      <button id="b-salvar" class="btn btn-light" type="button" ><i class="fas fa-save"></i></button>
+    </div>
+  </div>
+
+</div>
