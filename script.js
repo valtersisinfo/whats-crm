@@ -15,10 +15,10 @@ $(document).ready(function () {
 
       for (let Vi = 0; Vi < $("div[data-testid='cell-frame-container']").length; Vi++) {
         const VEl = $("div[data-testid='cell-frame-container']")[Vi];
-        $(VEl).attr("id", VOrdenado[Vi]);
+        $(VEl).attr("id", "c-" + VOrdenado[Vi]);
 
         let VContato = {
-          id: Vi,
+          id: "c-" + VOrdenado[Vi],
           nome: $($(VEl).find("span[dir='auto']")[0]).html(),
           foto: $(VEl).find("img").attr("src"),
           ultima: $(VEl).find("._1qB8f .ggj6brxn").html(),
@@ -29,16 +29,16 @@ $(document).ready(function () {
       }
 
       // Esconde a visão do whatsapp
-      $("#app").css("display", "none");
+      $("#app").css("display", "none");3
+      
 
       $("body").attr("class", "");
-      $("body").prepend("<div id='CRM'></div>");
+      $("body").append("<div id='CRM'></div>");
 
       $("#CRM").load(chrome.runtime.getURL("index.html"), function() {
-
         for (let Vi = 0; Vi < VAContato.length; Vi++) {
           const VEl = VAContato[Vi];
-          $("#d-inbox .d-contatos").append("<div id='" + VEl.id +"' class='card d-contato mb-1'>" +
+          $("#d-inbox .d-contatos").append("<div id='"+ VEl.id +"' class='card d-contato mb-1'>" +
             "<div class='card-body p-1'>" +
             "<div class='d-titulo'>" +
             "<img id='i-foto' src='" + (VEl.foto != undefined ? VEl.foto : chrome.runtime.getURL("images/user.png")) + "' alt='" + VEl.nome + "'>" +
@@ -68,30 +68,22 @@ $(document).ready(function () {
         });
 
         // Começa a arrastar o tr
-        $(".d-cards .d-contatos").on("dragstart", ".d-contato", function(event) {
+        $(".d-cards").on("dragstart", ".d-contatos .d-contato", function(event) {
           event.originalEvent.dataTransfer.setData("id", $(this).attr("id"));
           event.originalEvent.dataTransfer.setData("nome", $(this).find("#p-nome").html());
           event.originalEvent.dataTransfer.setData("foto", $(this).find("#i-foto").attr("src"));
           event.originalEvent.dataTransfer.setData("ultima", $(this).find("#p-ultima").html());
           event.originalEvent.dataTransfer.setData("tempo", $(this).find("#p-tempo").html());
           event.originalEvent.dataTransfer.setData("alerta", $(this).find("#d-alerta").attr("alerta"));
-          //$(this).remove();
         });
 
         $(".d-cards").on("drop", ".d-contatos", function(event) {
           const VId = event.originalEvent.dataTransfer.getData("id");
-          console.log("VId", VId);
           const VNome = event.originalEvent.dataTransfer.getData("nome");
-          console.log("VNome", VNome);
           const VFoto = event.originalEvent.dataTransfer.getData("foto");
-          console.log("VFoto", VFoto);
           const VUltima = event.originalEvent.dataTransfer.getData("ultima");
-          console.log("VUltima", VUltima);
           const VTempo = event.originalEvent.dataTransfer.getData("tempo");
-          console.log("VTempo", VTempo);
           const VAlerta = event.originalEvent.dataTransfer.getData("alerta");
-          console.log("VAlerta", VAlerta);
-
 
           $(".d-cards .d-contatos #" + VId).remove();
 
@@ -118,6 +110,18 @@ $(document).ready(function () {
 
           $(".d-cards .d-contatos .d-contato").prop("draggable", true);
         });
+
+        $(".d-cards").on("click", ".d-contatos .d-contato", function(event) {
+          const myModal = new bootstrap.Modal('#DChat');
+          myModal.show();
+          console.log("$(this).attr(\"id\")", $(this).attr("id"));
+          simulateMouseEvents(document.querySelector('#app #' + $(this).attr("id")), 'mousedown');
+
+          let VChat = $(".ldL67._3sh5K").html();
+          console.log("VChat", VChat);
+          $("#DChat .modal-body").html(VChat);
+        });
+
 
         // Função para exibir opção de criar nova lista
         $(".d-adicionar #b-adicionar").on("click", function(){
@@ -159,7 +163,13 @@ $(document).ready(function () {
           }
         });
 
-      });
+      });/** */
     }
   }, 100);
 });
+
+function simulateMouseEvents(element, eventName) {
+  var mouseEvent= document.createEvent ('MouseEvents');
+  mouseEvent.initEvent (eventName, true, true);
+  element.dispatchEvent (mouseEvent);
+}
