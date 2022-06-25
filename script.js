@@ -5,20 +5,21 @@ $(document).ready(function () {
       clearInterval(VExisteContato);
       let VAContato = [];
 
+      /*
       const VOrdenado = [];
       const VOrdena = Math.ceil($("div[data-testid='cell-frame-container']").length / 11) * 11;
       for (let Vi = 0; Vi < VOrdena; Vi += 11) {
         for (let Vj = Vi + 11; Vj > Vi; Vj--) {
           VOrdenado.push(Vj);
         }
-      }
+      }/** */
 
       for (let Vi = 0; Vi < $("div[data-testid='cell-frame-container']").length; Vi++) {
         const VEl = $("div[data-testid='cell-frame-container']")[Vi];
-        $(VEl).attr("id", "c-" + VOrdenado[Vi]);
+        $(VEl).attr("id", "c-" + Vi);
 
         let VContato = {
-          id: "c-" + VOrdenado[Vi],
+          id: "c-" + Vi,
           nome: $($(VEl).find("span[dir='auto']")[0]).html(),
           foto: $(VEl).find("img").attr("src"),
           ultima: $(VEl).find("._1qB8f .ggj6brxn").html(),
@@ -116,22 +117,9 @@ $(document).ready(function () {
         });
 
         $(".d-cards").on("click", ".d-contatos .d-contato", function(event) {
-          // const myModal = new bootstrap.Modal('#DChat');
-          // myModal.show();
           $("#app").show();
-          console.log("$(this).attr(\"id\")", $(this).attr("id"));
           simulateMouseEvents(document.querySelector('#app #' + $(this).attr("id")), 'mousedown');
-
-          // let VChat = $(".ldL67._3sh5K").html();
-          // console.log("VChat", VChat);
-          // $("#DChat .modal-body").html(VChat);
-
-          // $(".ldL67._3sh5K").appendTo("#DChat .modal-body");
-
-          // jQuery(".ldL67._3sh5K").detach().appendTo('#DChat .modal-body');
-
         });
-
 
         // Função para exibir opção de criar nova lista
         $(".d-adicionar #b-adicionar").on("click", function(){
@@ -154,9 +142,9 @@ $(document).ready(function () {
             "<h6 class='card-title text-center mb-0'>" + $("#i-salvar").val() + "</h6>" +
             "<button id='b-configuracao-" + VContLista + "' type='button' class='btn btn-link b-configuracao' data-bs-toggle='dropdown' aria-expanded='false'>" +
             "<ul class='dropdown-menu' aria-labelledby='b-configuracao-" + VContLista + "'>" +
-            "<li><a id='a-esconder' onclick='esconder(event)' class='dropdown-item'><i class='fas fa-eye-slash'></i> Esconder todos</a></li>" +
-            "<li><a id='a-mostrar' onclick='mostrar(event)' class='dropdown-item' style='display: none;'><i class='fas fa-eye'></i> Mostrar todos</a></li>" +
-            "<li><a id='a-marcar' onclick='marcar(event)' class='dropdown-item'><i class='fas fa-bell-slash'></i> Marcar todos como lido</a></li>" +
+            "<li><a id='a-esconder' class='dropdown-item'><i class='fas fa-eye-slash'></i> Esconder todos</a></li>" +
+            "<li><a id='a-mostrar' class='dropdown-item' style='display: none;'><i class='fas fa-eye'></i> Mostrar todos</a></li>" +
+            "<li><a id='a-marcar' class='dropdown-item'><i class='fas fa-bell-slash'></i> Marcar todos como lido</a></li>" +
             "</ul>" +
             "<i class='fa-solid fa-ellipsis'></i>" +
             "</button>" +
@@ -171,6 +159,25 @@ $(document).ready(function () {
             $("#d-salvar").addClass("d-none");
             $("#i-salvar").val("");
           }
+        });
+
+        $(".d-cards").on("click", "#a-esconder", function(){
+          $(this).css("display", "none");
+          $(this).parents("ul").find("#a-mostrar").css("display", "block");
+          $(this).parents(".lista").find(".d-contato").css("display", "none");
+        });
+
+        $(".d-cards").on("click", "#a-mostrar", function(){
+          $(this).css("display", "none");
+          $(this).parents("ul").find("#a-esconder").css("display", "block");
+          $(this).parents(".lista").find(".d-contato").css("display", "block");
+        });
+
+        $(".d-cards").on("click", "#a-marcar", function(){
+          $(this).parents(".card-titulo").find("#b-alerta").css("display", "none");
+          $(this).parents(".card-titulo").find("#b-alerta").children("span").html("0");
+          $(this).parents(".lista").find(".d-contatos").find("div[alerta='true']").html("");
+          $(this).parents(".lista").find(".d-contatos").find("div[alerta='true']").attr("alerta", "false");
         });
 
         $("#close_button").on("click", function(){
