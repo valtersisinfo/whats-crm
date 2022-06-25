@@ -29,8 +29,12 @@ $(document).ready(function () {
       }
 
       // Esconde a visão do whatsapp
-      $("#app").css("display", "none");3
-      
+      $("#app").hide();
+      $(".ldL67._2i3T7").hide();
+      //$(".ldL67._3sh5K").hide();
+      //$(".ldL67._2i3T7").hide();
+      $("#app").prepend('<button id="close_button"><i class="fa-solid fa-close"></i></button>');
+      $("#app").append("<div id='overlay'></div>");
 
       $("body").attr("class", "");
       $("body").append("<div id='CRM'></div>");
@@ -112,14 +116,20 @@ $(document).ready(function () {
         });
 
         $(".d-cards").on("click", ".d-contatos .d-contato", function(event) {
-          const myModal = new bootstrap.Modal('#DChat');
-          myModal.show();
+          // const myModal = new bootstrap.Modal('#DChat');
+          // myModal.show();
+          $("#app").show();
           console.log("$(this).attr(\"id\")", $(this).attr("id"));
           simulateMouseEvents(document.querySelector('#app #' + $(this).attr("id")), 'mousedown');
 
-          let VChat = $(".ldL67._3sh5K").html();
-          console.log("VChat", VChat);
-          $("#DChat .modal-body").html(VChat);
+          // let VChat = $(".ldL67._3sh5K").html();
+          // console.log("VChat", VChat);
+          // $("#DChat .modal-body").html(VChat);
+
+          // $(".ldL67._3sh5K").appendTo("#DChat .modal-body");
+
+          // jQuery(".ldL67._3sh5K").detach().appendTo('#DChat .modal-body');
+
         });
 
 
@@ -161,6 +171,10 @@ $(document).ready(function () {
             $("#d-salvar").addClass("d-none");
             $("#i-salvar").val("");
           }
+        });
+
+        $("#close_button").on("click", function(){
+          $("#app").hide();
         });
 
       });/** */
