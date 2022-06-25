@@ -5,21 +5,22 @@ $(document).ready(function () {
       clearInterval(VExisteContato);
       let VAContato = [];
 
-      /*
       const VOrdenado = [];
-      const VOrdena = Math.ceil($("div[data-testid='cell-frame-container']").length / 11) * 11;
-      for (let Vi = 0; Vi < VOrdena; Vi += 11) {
-        for (let Vj = Vi + 11; Vj > Vi; Vj--) {
+      const VOrdena = Math.ceil($("div[data-testid='cell-frame-container']").length / 10) * 10;
+      for (let Vi = 0; Vi < VOrdena; Vi += 10) {
+        for (let Vj = Vi + 10; Vj > Vi; Vj--) {
           VOrdenado.push(Vj);
         }
-      }/** */
+      }
+      console.log("VOrdenado", VOrdenado);
 
       for (let Vi = 0; Vi < $("div[data-testid='cell-frame-container']").length; Vi++) {
-        const VEl = $("div[data-testid='cell-frame-container']")[Vi];
-        $(VEl).attr("id", "c-" + Vi);
+        const VEl = $("div[data-testid='cell-frame-container']")[VOrdenado[Vi]];
+        $(VEl).attr("id", "c-" + VOrdenado[Vi]);
+        console.log("$(VEl).attr(\"id\", \"c-\" + VOrdenado[Vi])", $(VEl).attr("id", "c-" + VOrdenado[Vi]));
 
         let VContato = {
-          id: "c-" + Vi,
+          id: "c-" + VOrdenado[Vi],
           nome: $($(VEl).find("span[dir='auto']")[0]).html(),
           foto: $(VEl).find("img").attr("src"),
           ultima: $(VEl).find("._1qB8f .ggj6brxn").html(),
