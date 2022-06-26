@@ -12,7 +12,6 @@ $(document).ready(function () {
           VOrdenado.push(Vj);
         }
       }
-      console.log("VOrdenado", VOrdenado);
 
       for (let Vi = 0; Vi < $("div[data-testid='cell-frame-container']").length; Vi++) {
         const VEl = $("div[data-testid='cell-frame-container']")[VOrdenado[Vi]];
@@ -122,6 +121,42 @@ $(document).ready(function () {
           simulateMouseEvents(document.querySelector('#app #' + $(this).attr("id")), 'mousedown');
         });
 
+        $.ajax({
+          type: "GET",
+          url: "https://www.acordarcedo.com/ac-backend/whatsapp-crm/lista",
+          data: "",
+          dataType: "json",
+          success: function (response) {
+            console.log("response", response);
+            for (let i = 0; i < response.length; i++) {
+              const e = response[i];
+              $(".d-cards").append("<div id='d-" + e.id + "' class='card lista'>"+
+                "<div class='card-body p-1'>" +
+                "<div class='card-titulo mb-1'>" +
+                "<div>" +
+                "<button id='b-alerta' type='button' class='btn btn-warning b-alerta' style='display:none;'>" +
+                "<i class='fa-solid fa-bell'></i> <span></span>" +
+                "</button>" +
+                "</div>" +
+                "<h6 class='card-title text-center mb-0'>" + e.nome + "</h6>" +
+                "<button id='b-configuracao-" + e.id + "' type='button' class='btn btn-link b-configuracao' data-bs-toggle='dropdown' aria-expanded='false'>" +
+                "<ul class='dropdown-menu' aria-labelledby='b-configuracao-" + e.id + "'>" +
+                "<li><a id='a-deletar' value='" + e.id + "' class='dropdown-item'><i class='fas fa-trash-alt'></i> Deletar lista</a></li>" +
+                "<li><a id='a-esconder' class='dropdown-item'><i class='fas fa-eye-slash'></i> Esconder todos</a></li>" +
+                "<li><a id='a-mostrar' class='dropdown-item' style='display: none;'><i class='fas fa-eye'></i> Mostrar todos</a></li>" +
+                "<li><a id='a-marcar' class='dropdown-item'><i class='fas fa-bell-slash'></i> Marcar todos como lido</a></li>" +
+                "</ul>" +
+                "<i class='fa-solid fa-ellipsis'></i>" +
+                "</button>" +
+                "</div>" +
+                "<div class='d-contatos'>" +
+                "</div>" +
+                "</div>" +
+                "</div>");
+            }
+          }
+        });
+
         // Função para exibir opção de criar nova lista
         $(".d-adicionar #b-adicionar").on("click", function(){
           $(".d-adicionar #b-adicionar").addClass("d-none");
@@ -132,34 +167,59 @@ $(document).ready(function () {
         $("#b-salvar").on("click", function(){
           if ($("#i-salvar").val() != "")
           {
-            $(".d-cards").append("<div id='d-" + VContLista + "' class='card lista'>"+
-            "<div class='card-body p-1'>" +
-            "<div class='card-titulo mb-1'>" +
-            "<div>" +
-            "<button id='b-alerta' type='button' class='btn btn-warning b-alerta' style='display:none;'>" +
-            "<i class='fa-solid fa-bell'></i> <span></span>" +
-            "</button>" +
-            "</div>" +
-            "<h6 class='card-title text-center mb-0'>" + $("#i-salvar").val() + "</h6>" +
-            "<button id='b-configuracao-" + VContLista + "' type='button' class='btn btn-link b-configuracao' data-bs-toggle='dropdown' aria-expanded='false'>" +
-            "<ul class='dropdown-menu' aria-labelledby='b-configuracao-" + VContLista + "'>" +
-            "<li><a id='a-esconder' class='dropdown-item'><i class='fas fa-eye-slash'></i> Esconder todos</a></li>" +
-            "<li><a id='a-mostrar' class='dropdown-item' style='display: none;'><i class='fas fa-eye'></i> Mostrar todos</a></li>" +
-            "<li><a id='a-marcar' class='dropdown-item'><i class='fas fa-bell-slash'></i> Marcar todos como lido</a></li>" +
-            "</ul>" +
-            "<i class='fa-solid fa-ellipsis'></i>" +
-            "</button>" +
-            "</div>" +
-            "<div class='d-contatos'>" +
-            "</div>" +
-            "</div>" +
-            "</div>");
-            VContLista++;
+            $.ajax({
+              type: "POST",
+              url: "https://www.acordarcedo.com/ac-backend/whatsapp-crm/lista",
+              data: {
+                nome: $("#i-salvar").val()
+              },
+              dataType: "json",
+              success: function (response) {
+                const e = response;
+                $(".d-cards").append("<div id='d-" + e.id + "' class='card lista'>"+
+                  "<div class='card-body p-1'>" +
+                  "<div class='card-titulo mb-1'>" +
+                  "<div>" +
+                  "<button id='b-alerta' type='button' class='btn btn-warning b-alerta' style='display:none;'>" +
+                  "<i class='fa-solid fa-bell'></i> <span></span>" +
+                  "</button>" +
+                  "</div>" +
+                  "<h6 class='card-title text-center mb-0'>" + e.nome + "</h6>" +
+                  "<button id='b-configuracao-" + e.id + "' type='button' class='btn btn-link b-configuracao' data-bs-toggle='dropdown' aria-expanded='false'>" +
+                  "<ul class='dropdown-menu' aria-labelledby='b-configuracao-" + e.id + "'>" +
+                  "<li><a id='a-deletar' value='" + e.id + "' class='dropdown-item'><i class='fas fa-trash-alt'></i> Deletar lista</a></li>" +
+                  "<li><a id='a-esconder' class='dropdown-item'><i class='fas fa-eye-slash'></i> Esconder todos</a></li>" +
+                  "<li><a id='a-mostrar' class='dropdown-item' style='display: none;'><i class='fas fa-eye'></i> Mostrar todos</a></li>" +
+                  "<li><a id='a-marcar' class='dropdown-item'><i class='fas fa-bell-slash'></i> Marcar todos como lido</a></li>" +
+                  "</ul>" +
+                  "<i class='fa-solid fa-ellipsis'></i>" +
+                  "</button>" +
+                  "</div>" +
+                  "<div class='d-contatos'>" +
+                  "</div>" +
+                  "</div>" +
+                  "</div>");
 
-            $(".d-adicionar #b-adicionar").removeClass("d-none");
-            $("#d-salvar").addClass("d-none");
-            $("#i-salvar").val("");
+                $(".d-adicionar #b-adicionar").removeClass("d-none");
+                $("#d-salvar").addClass("d-none");
+                $("#i-salvar").val("");
+              }
+            });
           }
+        });
+
+        $(".d-cards").on("click", "#a-deletar", function(){
+          let deletar = $(this).attr("value")
+          $.ajax({
+            type: "DELETE",
+            url: "https://www.acordarcedo.com/ac-backend/whatsapp-crm/lista/" + deletar,
+            data: "",
+            dataType: "json",
+            success: function (response) {
+              $(".d-cards #d-" + deletar).remove();
+              console.log("\".d-cards #d-\" + $(this).attr(\"value\")", ".d-cards #d-" + deletar);
+            }
+          });
         });
 
         $(".d-cards").on("click", "#a-esconder", function(){
