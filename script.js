@@ -1,7 +1,27 @@
 $(document).ready(function () {
 
+  console.log("teste");
+  $.ajax({
+    type: "GET",
+    url: "https://www.acordarcedo.com/ac-backend/ac/autenticacao/validar/",
+    data: {
+      usuario: "bruno.prado35",
+      senha: "asdf123/",
+    },
+    dataType: "json",
+    success: function (response) {
+      $("body").attr("idusuario", response.id);
+    },
+    error: function (request, status, error) {
+      console.log("request", request);
+      console.log("status", status);
+      console.log("error", error);
+      console.log(request.responseText);
+    }
+  });
+
   let VExisteContato = setInterval(function() {
-    if ($("div[data-testid='cell-frame-container']").length != 0) {
+    if ($("div[data-testid='cell-frame-container']").length != 0 && $("body").attr("idusuario") != undefined) {
       clearInterval(VExisteContato);
       let VAContato = [];
 
@@ -16,7 +36,7 @@ $(document).ready(function () {
       for (let Vi = 0; Vi < $("div[data-testid='cell-frame-container']").length; Vi++) {
         const VEl = $("div[data-testid='cell-frame-container']")[VOrdenado[Vi]];
         $(VEl).attr("id", "c-" + VOrdenado[Vi]);
-        console.log("$(VEl).attr(\"id\", \"c-\" + VOrdenado[Vi])", $(VEl).attr("id", "c-" + VOrdenado[Vi]));
+        //console.log("$(VEl).attr(\"id\", \"c-\" + VOrdenado[Vi])", $(VEl).attr("id", "c-" + VOrdenado[Vi]));
 
         let VContato = {
           id: "c-" + VOrdenado[Vi],
@@ -117,17 +137,25 @@ $(document).ready(function () {
         });
 
         $(".d-cards").on("click", ".d-contatos .d-contato", function(event) {
+          $(this).find("div[alerta='true']").html("");
+          $(this).find("div[alerta='true']").attr("alerta", "false");
           $("#app").show();
           simulateMouseEvents(document.querySelector('#app #' + $(this).attr("id")), 'mousedown');
+        });
+
+        $("#close_button").on("click", function(){
+          $("#app").hide();
         });
 
         $.ajax({
           type: "GET",
           url: "https://www.acordarcedo.com/ac-backend/whatsapp-crm/lista",
-          data: "",
+          data: {
+            idusuario: $("body").attr("idusuario")
+          },
           dataType: "json",
           success: function (response) {
-            console.log("response", response);
+            //console.log("response", response);
             for (let i = 0; i < response.length; i++) {
               const e = response[i];
               $(".d-cards").append("<div id='d-" + e.id + "' class='card lista'>"+
@@ -171,7 +199,8 @@ $(document).ready(function () {
               type: "POST",
               url: "https://www.acordarcedo.com/ac-backend/whatsapp-crm/lista",
               data: {
-                nome: $("#i-salvar").val()
+                nome: $("#i-salvar").val(),
+                idusuario: $("body").attr("idusuario")
               },
               dataType: "json",
               success: function (response) {
@@ -209,15 +238,16 @@ $(document).ready(function () {
         });
 
         $(".d-cards").on("click", "#a-deletar", function(){
-          let deletar = $(this).attr("value")
+          let deletar = $(this).attr("value");
           $.ajax({
             type: "DELETE",
             url: "https://www.acordarcedo.com/ac-backend/whatsapp-crm/lista/" + deletar,
             data: "",
             dataType: "json",
             success: function (response) {
+              $(".d-cards #d-inbox .d-contatos").append($(".d-cards #d-" + deletar + " .d-contatos").html());
               $(".d-cards #d-" + deletar).remove();
-              console.log("\".d-cards #d-\" + $(this).attr(\"value\")", ".d-cards #d-" + deletar);
+
             }
           });
         });
@@ -240,12 +270,7 @@ $(document).ready(function () {
           $(this).parents(".lista").find(".d-contatos").find("div[alerta='true']").html("");
           $(this).parents(".lista").find(".d-contatos").find("div[alerta='true']").attr("alerta", "false");
         });
-
-        $("#close_button").on("click", function(){
-          $("#app").hide();
-        });
-
-      });/** */
+      });
     }
   }, 100);
 });
