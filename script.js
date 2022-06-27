@@ -36,7 +36,6 @@ $(document).ready(function () {
       for (let Vi = 0; Vi < $("div[data-testid='cell-frame-container']").length; Vi++) {
         const VEl = $("div[data-testid='cell-frame-container']")[VOrdenado[Vi]];
         $(VEl).attr("id", "c-" + VOrdenado[Vi]);
-        //console.log("$(VEl).attr(\"id\", \"c-\" + VOrdenado[Vi])", $(VEl).attr("id", "c-" + VOrdenado[Vi]));
 
         let VContato = {
           id: "c-" + VOrdenado[Vi],
@@ -84,6 +83,17 @@ $(document).ready(function () {
             "</div>" +
             "</div>");
         }
+
+        $("#b-chat").on("click", function() {
+          $("#app .ldL67._2i3T7").css("display", "block");
+          $("#app .ldL67._3sh5K").css("display", "none");
+          $("#app").show();
+        });
+
+        $("#app .ldL67._2i3T7").on("click", function() {
+          $("#app .ldL67._2i3T7").css("display", "none");
+          $("#app .ldL67._3sh5K").css("display", "block");
+        });
 
         $(".d-cards .d-contatos .d-contato").prop("draggable", true);
 
@@ -139,6 +149,8 @@ $(document).ready(function () {
         $(".d-cards").on("click", ".d-contatos .d-contato", function(event) {
           $(this).find("div[alerta='true']").html("");
           $(this).find("div[alerta='true']").attr("alerta", "false");
+          $("#app .ldL67._2i3T7").css("display", "none");
+          $("#app .ldL67._3sh5K").css("display", "block");
           $("#app").show();
           simulateMouseEvents(document.querySelector('#app #' + $(this).attr("id")), 'mousedown');
         });
