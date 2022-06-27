@@ -35,17 +35,19 @@ $(document).ready(function () {
 
       for (let Vi = 0; Vi < $("div[data-testid='cell-frame-container']").length; Vi++) {
         const VEl = $("div[data-testid='cell-frame-container']")[VOrdenado[Vi]];
-        $(VEl).attr("id", "c-" + VOrdenado[Vi]);
+        if ($($(VEl).find("span[dir='auto']")[0]).html() != undefined) {
+          $(VEl).attr("id", "c-" + VOrdenado[Vi]);
 
-        let VContato = {
-          id: "c-" + VOrdenado[Vi],
-          nome: $($(VEl).find("span[dir='auto']")[0]).html(),
-          foto: $(VEl).find("img").attr("src"),
-          ultima: $(VEl).find("._1qB8f .ggj6brxn").html(),
-          tempo: $($(VEl).find("span[dir='auto']")[0]).parent().siblings().html(),
-          alerta: $(VEl).find("._1i_wG[aria-colindex='1'] span.l7jjieqr ").html() != undefined ? $(VEl).find("._1i_wG[aria-colindex='1'] span.l7jjieqr ").html() : "0",
-        };
-        VAContato.push(VContato);
+          let VContato = {
+            id: "c-" + VOrdenado[Vi],
+            nome: $($(VEl).find("span[dir='auto']")[0]).html(),
+            foto: $(VEl).find("img").attr("src"),
+            ultima: $(VEl).find("._1qB8f .ggj6brxn").html(),
+            tempo: $($(VEl).find("span[dir='auto']")[0]).parent().siblings().html(),
+            alerta: $(VEl).find("._1i_wG[aria-colindex='1'] span.l7jjieqr ").html() != undefined ? $(VEl).find("._1i_wG[aria-colindex='1'] span.l7jjieqr ").html() : "0",
+          };
+          VAContato.push(VContato);
+        }
       }
 
       // Esconde a visão do whatsapp
@@ -57,7 +59,7 @@ $(document).ready(function () {
       $("#app").append("<div id='overlay'></div>");
 
       $("body").attr("class", "");
-      $("body").append("<div id='CRM'></div>");
+      $("body").append("<div id='CRM' style='overflow:auto;'></div>");
 
       $("#CRM").load(chrome.runtime.getURL("index.html"), function() {
         for (let Vi = 0; Vi < VAContato.length; Vi++) {
