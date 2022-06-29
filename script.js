@@ -19,41 +19,42 @@ $(document).ready(function () {
     }
   });
 
-  let VExisteContato = setInterval(function() {
-    if ($("div[data-testid='cell-frame-container']").length != 0 && $("body").attr("idusuario") != undefined) {
+  let VExisteContato = setInterval(function(e) {
+    console.log("e", e);
+    if ($("._2nY6U.vq6sj").length != 0 && $("body").attr("idusuario") != undefined) {
       clearInterval(VExisteContato);
 
-      $("#app #pane-side").on("scroll", function() {
+      $("#app #pane-side").on("scroll", function(e) {
         $("#app .zoWT4 span").attr("id", "w-nome");
         $("#app .HONz8 img").attr("id", "w-foto");
         $("#app .Hy9nV [dir='ltr']").attr("id", "w-ultima");
         $("#app div[role='gridcell'] ._1i_wG").attr("id", "w-tempo");
         $("#app div[role='gridcell'] ._1pJ9J span").attr("id", "w-alerta");
+
+        let VAContatoWhats = $("._2nY6U.vq6sj");
+        for (let Vi = 0; Vi < VAContatoWhats.length; Vi++) {
+          let VEl = VAContatoWhats[Vi];
+          $(VEl).attr("id", "c-" + Vi);
+        }
       });
       $("#app #pane-side").trigger("scroll");
 
-      const VOrdenado = [];
-      const VOrdena = Math.ceil($("div[data-testid='cell-frame-container']").length / 10) * 10;
-
-      for (let Vi = 0; Vi < VOrdena; Vi += (VOrdena/2)) {
-        for (let Vj = Vi + (VOrdena/2); Vj > Vi; Vj--) {
-          VOrdenado.push(Vj);
+      let VAContatoWhats = $("div[data-testid='cell-frame-container']");
+      VOrdenado = [];
+      for (let Vi = 0; Vi < VAContatoWhats.length; Vi += (VAContatoWhats.length/2)) {
+        for (let Vj = Vi + 10; Vj > Vi; Vj--) {
+          const VEl = VAContatoWhats[Vj];
+          if (VEl != undefined)
+            VOrdenado.push(Vj);
         }
       }
 
       let VAContato = [];
       for (let Vi = 0; Vi < $("div[data-testid='cell-frame-container']").length; Vi++) {
-        const VEl = $("div[data-testid='cell-frame-container']")[VOrdenado[Vi]];
-        if ($($(VEl).find("span[dir='auto']")[0]).html() != undefined) {
-          let contato = $($("#app .zoWT4 span")[VOrdenado[Vi]]).html().replaceAll(" ", "").replaceAll("'", "").replaceAll('"', "").replaceAll('+', "").replaceAll('.', "").replaceAll(',', "");
-          let cont = "-";
-          while ($("#" + contato).length != 0) {
-            contato += cont;
-          }
-
-          $(VEl).attr("id", contato);
+        VEl = $("#c-" + VOrdenado[Vi]);
+        if ($(VEl).find("#w-nome").html() != undefined) {
           let VContato = {
-            id: contato,
+            id: "c-" + VOrdenado[Vi],
             nome: $(VEl).find("#w-nome").html(),
             foto: $(VEl).find("#w-foto").attr("src"),
             ultima: $(VEl).find("#w-ultima").html(),
@@ -82,7 +83,7 @@ $(document).ready(function () {
             "<div class='card-body p-1'>" +
             "<div class='d-titulo'>" +
             "<img id='i-foto' src='" + (VEl.foto != undefined ? VEl.foto : chrome.runtime.getURL("images/user.png")) + "' alt='" + VEl.nome + "'>" +
-            "<p id='p-nome'>" + VEl.nome + "</p>" +
+            "<p id='p-nome' class='p-nome'>" + VEl.nome + "</p>" +
             "<button id='b-configuracao' type='button' class='btn btn-link'>" +
             "<i class='fa-solid fa-ellipsis'></i>" +
             "</button>" +
@@ -114,8 +115,41 @@ $(document).ready(function () {
         });
 
         // REFRESH
-        $("#app").on("change", ".zoWT4 span", function(e){
-          console.log("Teste", e);
+        $("#app").on("DOMSubtreeModified", "#w-nome", function(e){
+          let VContato = $(this).html();
+          if ($(".p-nome:contains(" + VContato + ")").length == 0)
+          {
+            let VId = "";
+            let VFoto = "";
+            let VNome = "";
+            let VUltima = "";
+            let VTempo = "";
+            let VAlerta = "";
+
+            /*
+            $(this).append("<div id='" + VId +"' class='card d-contato mb-1'>" +
+              "<div class='card-body p-1'>" +
+              "<div class='d-titulo'>" +
+              "<img id='i-foto' src='" + VFoto + "' alt='" + VNome + "'>" +
+              "<p id='p-nome' class='p-nome'>" + VNome + "</p>" +
+              "<button id='b-configuracao' type='button' class='btn btn-link'>" +
+              "<i class='fa-solid fa-ellipsis'></i>" +
+              "</button>" +
+              "</div>" +
+              "<div class='d-conteudo'>" +
+              "<div>" +
+              "<p id='p-ultima' class='p-ultima'>" + VUltima + "</p>" +
+              "<p id='p-tempo' class='p-tempo'>" + VTempo + "</p>" +
+              "</div>" +
+              "<div id='d-alerta' alerta='" + (VAlerta == "true") + "'>" +
+              (VAlerta == "true" ? "<button id='b-alerta' type='button' class='btn btn-warning b-alerta' style='display: block;'><i class='fa-solid fa-bell'></i></button>" : "") +
+              "</div>" +
+              "</div>" +
+              "</div>" +
+              "</div>");/** */
+          }
+
+
         });
 
         // Pega as listas
@@ -190,7 +224,7 @@ $(document).ready(function () {
           "<div class='card-body p-1'>" +
           "<div class='d-titulo'>" +
           "<img id='i-foto' src='" + VFoto + "' alt='" + VNome+ "'>" +
-          "<p id='p-nome'>" + VNome + "</p>" +
+          "<p id='p-nome' class='p-nome'>" + VNome + "</p>" +
           "<button id='b-configuracao' type='button' class='btn btn-link'>" +
           "<i class='fa-solid fa-ellipsis'></i>" +
           "</button>" +
@@ -212,15 +246,42 @@ $(document).ready(function () {
 
         // Clica no contato
         $(".d-cards").on("click", ".d-contatos .d-contato", function(event) {
-          $(this).find("div[alerta='true']").html("");
-          $(this).find("div[alerta='true']").attr("alerta", "false");
-          $("#app .ldL67._2i3T7").hide();
-          $("#app .ldL67._3sh5K").show();
-          $("#app").show();
+          let VElemento = $("#app #w-foto[src='" + $(this).find("#i-foto").attr("src") + "']").parents("._2nY6U.vq6sj")[0];
 
-          var mouseEvent= document.createEvent ('MouseEvents');
-          mouseEvent.initEvent ("mousedown", true, true);
-          document.querySelector("#app #" + $(this).attr("id")).dispatchEvent(mouseEvent);
+          if (VElemento == undefined) {
+          console.log("VElemento", VElemento);
+
+            $("#app .ldL67._2i3T7").show();
+            $("#app .ldL67._3sh5K").hide();
+            $("#app").show();
+            document.querySelector("#app #pane-side").scrollTop = 0;
+
+            let VTop = 0;
+            while (VElemento == undefined && VTop <= document.querySelector("#app #pane-side").scrollHeight) {
+              VTop += 200;
+              document.querySelector("#app #pane-side").scrollTop = VTop;
+
+              let VAContatoWhats = $("._2nY6U.vq6sj");
+              for (let Vi = 0; Vi < VAContatoWhats.length; Vi++) {
+                let VEl = VAContatoWhats[Vi];
+                $(VEl).attr("id", "c-" + Vi);
+              }
+              VElemento = $("#app #w-foto[src='" + $(this).find("#i-foto").attr("src") + "']").parents("._2nY6U.vq6sj")[0];
+            }
+            $("#app").hide();/** */
+          }
+          else
+          {
+            let EventoDoMouse = document.createEvent('MouseEvents');
+            EventoDoMouse.initEvent ("mousedown", true, true);
+            VElemento.dispatchEvent(EventoDoMouse);
+
+            $(this).find("div[alerta='true']").html("");
+            $(this).find("div[alerta='true']").attr("alerta", "false");
+            $("#app .ldL67._2i3T7").hide();
+            $("#app .ldL67._3sh5K").show();
+            $("#app").show();
+          }
         });
 
         // Encerra o modal
@@ -315,10 +376,5 @@ $(document).ready(function () {
         });
       });
     }
-  }, 100);
+  }, 350);
 });
-
-function teste(algo) {
-  console.log("algo", algo);
-
-}
