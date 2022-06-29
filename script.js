@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-  console.log("teste");
   $.ajax({
     type: "GET",
     url: "https://www.acordarcedo.com/ac-backend/ac/autenticacao/validar/",
@@ -23,28 +22,43 @@ $(document).ready(function () {
   let VExisteContato = setInterval(function() {
     if ($("div[data-testid='cell-frame-container']").length != 0 && $("body").attr("idusuario") != undefined) {
       clearInterval(VExisteContato);
-      let VAContato = [];
+
+      $("#app #pane-side").on("scroll", function() {
+        $("#app .zoWT4 span").attr("id", "w-nome");
+        $("#app .HONz8 img").attr("id", "w-foto");
+        $("#app .Hy9nV [dir='ltr']").attr("id", "w-ultima");
+        $("#app div[role='gridcell'] ._1i_wG").attr("id", "w-tempo");
+        $("#app div[role='gridcell'] ._1pJ9J span").attr("id", "w-alerta");
+      });
+      $("#app #pane-side").trigger("scroll");
 
       const VOrdenado = [];
       const VOrdena = Math.ceil($("div[data-testid='cell-frame-container']").length / 10) * 10;
-      for (let Vi = 0; Vi < VOrdena; Vi += 10) {
-        for (let Vj = Vi + 10; Vj > Vi; Vj--) {
+
+      for (let Vi = 0; Vi < VOrdena; Vi += (VOrdena/2)) {
+        for (let Vj = Vi + (VOrdena/2); Vj > Vi; Vj--) {
           VOrdenado.push(Vj);
         }
       }
 
+      let VAContato = [];
       for (let Vi = 0; Vi < $("div[data-testid='cell-frame-container']").length; Vi++) {
         const VEl = $("div[data-testid='cell-frame-container']")[VOrdenado[Vi]];
         if ($($(VEl).find("span[dir='auto']")[0]).html() != undefined) {
-          $(VEl).attr("id", "c-" + VOrdenado[Vi]);
+          let contato = $($("#app .zoWT4 span")[VOrdenado[Vi]]).html().replaceAll(" ", "").replaceAll("'", "").replaceAll('"', "").replaceAll('+', "").replaceAll('.', "").replaceAll(',', "");
+          let cont = "-";
+          while ($("#" + contato).length != 0) {
+            contato += cont;
+          }
 
+          $(VEl).attr("id", contato);
           let VContato = {
-            id: "c-" + VOrdenado[Vi],
-            nome: $($(VEl).find("span[dir='auto']")[0]).html(),
-            foto: $(VEl).find("img").attr("src"),
-            ultima: $(VEl).find("._1qB8f .ggj6brxn").html(),
-            tempo: $($(VEl).find("span[dir='auto']")[0]).parent().siblings().html(),
-            alerta: $(VEl).find("._1i_wG[aria-colindex='1'] span.l7jjieqr ").html() != undefined ? $(VEl).find("._1i_wG[aria-colindex='1'] span.l7jjieqr ").html() : "0",
+            id: contato,
+            nome: $(VEl).find("#w-nome").html(),
+            foto: $(VEl).find("#w-foto").attr("src"),
+            ultima: $(VEl).find("#w-ultima").html(),
+            tempo: $(VEl).find("#w-tempo").html(),
+            alerta: $(VEl).find("#w-alerta").html() != undefined ? $(VEl).find("#w-alerta").html() : "0",
           };
           VAContato.push(VContato);
         }
@@ -86,81 +100,25 @@ $(document).ready(function () {
             "</div>");
         }
 
-        $("#b-chat").on("click", function() {
-          $("#app .ldL67._2i3T7").css("display", "block");
-          $("#app .ldL67._3sh5K").css("display", "none");
+        // Ao clicar no icone de chat no navbar
+        $(".navbar #b-chat").on("click", function() {
+          $("#app .ldL67._2i3T7").show();
+          $("#app .ldL67._3sh5K").hide();
           $("#app").show();
         });
 
+        // Ao clicar em um contato do whatsapp
         $("#app .ldL67._2i3T7").on("click", function() {
-          $("#app .ldL67._2i3T7").css("display", "none");
-          $("#app .ldL67._3sh5K").css("display", "block");
+          $("#app .ldL67._2i3T7").hide();
+          $("#app .ldL67._3sh5K").show();
         });
 
-        $(".d-cards .d-contatos .d-contato").prop("draggable", true);
-
-        // Ao mover item dentro do container
-        $(".d-cards .d-contatos").on("dragover", ".d-contato", function(event) {
-          event.preventDefault(); // Necessário para fazer funcionar evento drop
+        // REFRESH
+        $("#app").on("change", ".zoWT4 span", function(e){
+          console.log("Teste", e);
         });
 
-        // Começa a arrastar o tr
-        $(".d-cards").on("dragstart", ".d-contatos .d-contato", function(event) {
-          event.originalEvent.dataTransfer.setData("id", $(this).attr("id"));
-          event.originalEvent.dataTransfer.setData("nome", $(this).find("#p-nome").html());
-          event.originalEvent.dataTransfer.setData("foto", $(this).find("#i-foto").attr("src"));
-          event.originalEvent.dataTransfer.setData("ultima", $(this).find("#p-ultima").html());
-          event.originalEvent.dataTransfer.setData("tempo", $(this).find("#p-tempo").html());
-          event.originalEvent.dataTransfer.setData("alerta", $(this).find("#d-alerta").attr("alerta"));
-        });
-
-        $(".d-cards").on("drop", ".d-contatos", function(event) {
-          const VId = event.originalEvent.dataTransfer.getData("id");
-          const VNome = event.originalEvent.dataTransfer.getData("nome");
-          const VFoto = event.originalEvent.dataTransfer.getData("foto");
-          const VUltima = event.originalEvent.dataTransfer.getData("ultima");
-          const VTempo = event.originalEvent.dataTransfer.getData("tempo");
-          const VAlerta = event.originalEvent.dataTransfer.getData("alerta");
-
-          $(".d-cards .d-contatos #" + VId).remove();
-
-          $(this).append("<div id='" + VId +"' class='card d-contato mb-1'>" +
-          "<div class='card-body p-1'>" +
-          "<div class='d-titulo'>" +
-          "<img id='i-foto' src='" + VFoto + "' alt='" + VNome+ "'>" +
-          "<p id='p-nome'>" + VNome + "</p>" +
-          "<button id='b-configuracao' type='button' class='btn btn-link'>" +
-          "<i class='fa-solid fa-ellipsis'></i>" +
-          "</button>" +
-          "</div>" +
-          "<div class='d-conteudo'>" +
-          "<div>" +
-          "<p id='p-ultima' class='p-ultima'>" + VUltima + "</p>" +
-          "<p id='p-tempo' class='p-tempo'>" + VTempo + "</p>" +
-          "</div>" +
-          "<div id='d-alerta' alerta='" + (VAlerta == "true") + "'>" +
-          (VAlerta == "true" ? "<button id='b-alerta' type='button' class='btn btn-warning b-alerta' style='display: block;'><i class='fa-solid fa-bell'></i></button>" : "") +
-          "</div>" +
-          "</div>" +
-          "</div>" +
-          "</div>");
-
-          $(".d-cards .d-contatos .d-contato").prop("draggable", true);
-        });
-
-        $(".d-cards").on("click", ".d-contatos .d-contato", function(event) {
-          $(this).find("div[alerta='true']").html("");
-          $(this).find("div[alerta='true']").attr("alerta", "false");
-          $("#app .ldL67._2i3T7").css("display", "none");
-          $("#app .ldL67._3sh5K").css("display", "block");
-          $("#app").show();
-          simulateMouseEvents(document.querySelector('#app #' + $(this).attr("id")), 'mousedown');
-        });
-
-        $("#close_button").on("click", function(){
-          $("#app").hide();
-        });
-
+        // Pega as listas
         $.ajax({
           type: "GET",
           url: "https://www.acordarcedo.com/ac-backend/whatsapp-crm/lista",
@@ -197,6 +155,77 @@ $(document).ready(function () {
                 "</div>");
             }
           }
+        });
+
+        // Ativa os eventos para mover
+        $(".d-cards .d-contatos .d-contato").prop("draggable", true);
+
+        // Necessário para fazer funcionar evento dragdrop
+        $(".d-cards .d-contatos").on("dragover", ".d-contato", function(event) {
+          event.preventDefault();
+        });
+
+        // Começa a arrastar o contato
+        $(".d-cards").on("dragstart", ".d-contatos .d-contato", function(event) {
+          event.originalEvent.dataTransfer.setData("id", $(this).attr("id"));
+          event.originalEvent.dataTransfer.setData("nome", $(this).find("#p-nome").html());
+          event.originalEvent.dataTransfer.setData("foto", $(this).find("#i-foto").attr("src"));
+          event.originalEvent.dataTransfer.setData("ultima", $(this).find("#p-ultima").html());
+          event.originalEvent.dataTransfer.setData("tempo", $(this).find("#p-tempo").html());
+          event.originalEvent.dataTransfer.setData("alerta", $(this).find("#d-alerta").attr("alerta"));
+        });
+
+        // Solta o contato
+        $(".d-cards").on("drop", ".d-contatos", function(event) {
+          const VId = event.originalEvent.dataTransfer.getData("id");
+          const VNome = event.originalEvent.dataTransfer.getData("nome");
+          const VFoto = event.originalEvent.dataTransfer.getData("foto");
+          const VUltima = event.originalEvent.dataTransfer.getData("ultima");
+          const VTempo = event.originalEvent.dataTransfer.getData("tempo");
+          const VAlerta = event.originalEvent.dataTransfer.getData("alerta");
+
+          $(".d-cards .d-contatos #" + VId).remove();
+
+          $(this).append("<div id='" + VId +"' class='card d-contato mb-1'>" +
+          "<div class='card-body p-1'>" +
+          "<div class='d-titulo'>" +
+          "<img id='i-foto' src='" + VFoto + "' alt='" + VNome+ "'>" +
+          "<p id='p-nome'>" + VNome + "</p>" +
+          "<button id='b-configuracao' type='button' class='btn btn-link'>" +
+          "<i class='fa-solid fa-ellipsis'></i>" +
+          "</button>" +
+          "</div>" +
+          "<div class='d-conteudo'>" +
+          "<div>" +
+          "<p id='p-ultima' class='p-ultima'>" + VUltima + "</p>" +
+          "<p id='p-tempo' class='p-tempo'>" + VTempo + "</p>" +
+          "</div>" +
+          "<div id='d-alerta' alerta='" + (VAlerta == "true") + "'>" +
+          (VAlerta == "true" ? "<button id='b-alerta' type='button' class='btn btn-warning b-alerta' style='display: block;'><i class='fa-solid fa-bell'></i></button>" : "") +
+          "</div>" +
+          "</div>" +
+          "</div>" +
+          "</div>");
+
+          $(".d-cards .d-contatos .d-contato").prop("draggable", true);
+        });
+
+        // Clica no contato
+        $(".d-cards").on("click", ".d-contatos .d-contato", function(event) {
+          $(this).find("div[alerta='true']").html("");
+          $(this).find("div[alerta='true']").attr("alerta", "false");
+          $("#app .ldL67._2i3T7").hide();
+          $("#app .ldL67._3sh5K").show();
+          $("#app").show();
+
+          var mouseEvent= document.createEvent ('MouseEvents');
+          mouseEvent.initEvent ("mousedown", true, true);
+          document.querySelector("#app #" + $(this).attr("id")).dispatchEvent(mouseEvent);
+        });
+
+        // Encerra o modal
+        $("#close_button").on("click", function(){
+          $("#app").hide();
         });
 
         // Função para exibir opção de criar nova lista
@@ -267,19 +296,19 @@ $(document).ready(function () {
         });
 
         $(".d-cards").on("click", "#a-esconder", function(){
-          $(this).css("display", "none");
-          $(this).parents("ul").find("#a-mostrar").css("display", "block");
-          $(this).parents(".lista").find(".d-contato").css("display", "none");
+          $(this).hide();
+          $(this).parents("ul").find("#a-mostrar").show();
+          $(this).parents(".lista").find(".d-contato").hide();
         });
 
         $(".d-cards").on("click", "#a-mostrar", function(){
-          $(this).css("display", "none");
-          $(this).parents("ul").find("#a-esconder").css("display", "block");
-          $(this).parents(".lista").find(".d-contato").css("display", "block");
+          $(this).hide();
+          $(this).parents("ul").find("#a-esconder").show();
+          $(this).parents(".lista").find(".d-contato").show();
         });
 
         $(".d-cards").on("click", "#a-marcar", function(){
-          $(this).parents(".card-titulo").find("#b-alerta").css("display", "none");
+          $(this).parents(".card-titulo").find("#b-alerta").hide();
           $(this).parents(".card-titulo").find("#b-alerta").children("span").html("0");
           $(this).parents(".lista").find(".d-contatos").find("div[alerta='true']").html("");
           $(this).parents(".lista").find(".d-contatos").find("div[alerta='true']").attr("alerta", "false");
@@ -289,8 +318,7 @@ $(document).ready(function () {
   }, 100);
 });
 
-function simulateMouseEvents(element, eventName) {
-  var mouseEvent= document.createEvent ('MouseEvents');
-  mouseEvent.initEvent (eventName, true, true);
-  element.dispatchEvent (mouseEvent);
+function teste(algo) {
+  console.log("algo", algo);
+
 }
