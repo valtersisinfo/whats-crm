@@ -101,39 +101,42 @@ body {
         //height: calc(100vh - 110px);
 
         .card-titulo {
-          align-items: center;
-          display: flex;
-          justify-content: space-between;
 
-          .b-alerta {
-            &:focus
-            {
-              box-shadow: none;
+          #d-exibir{
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+
+            .b-alerta {
+              &:focus
+              {
+                box-shadow: none;
+              }
             }
-          }
 
-          h6 {
-            font-weight: bolder;
-          }
+            h6 {
+              font-weight: bolder;
+            }
 
-          .btn-link {
-            color: $v4;
-          }
+            .btn-link {
+              color: $v4;
+            }
 
-          .dropdown-menu {
-            background-color: transparent;
-            border: none;
-            padding: 0;
+            .dropdown-menu {
+              background-color: transparent;
+              border: none;
+              padding: 0;
 
-            .dropdown-item {
-              background-color: rgba(0, 0, 0, .75);
-              border-radius: 5px;
-              color: white;
-              margin-bottom: 2px;
+              .dropdown-item {
+                background-color: rgba(0, 0, 0, .75);
+                border-radius: 5px;
+                color: white;
+                margin-bottom: 2px;
 
-              &:hover {
-                cursor: pointer;
-                margin-left: 10px;
+                &:hover {
+                  cursor: pointer;
+                  margin-left: 10px;
+                }
               }
             }
           }

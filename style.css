@@ -109,7 +109,7 @@ body {
   background-color: #dbdcdf;
 }
 
-.whats-crm .d-cards > .card > .card-body .card-titulo {
+.whats-crm .d-cards > .card > .card-body .card-titulo #d-exibir {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -121,33 +121,33 @@ body {
           justify-content: space-between;
 }
 
-.whats-crm .d-cards > .card > .card-body .card-titulo .b-alerta:focus {
+.whats-crm .d-cards > .card > .card-body .card-titulo #d-exibir .b-alerta:focus {
   -webkit-box-shadow: none;
           box-shadow: none;
 }
 
-.whats-crm .d-cards > .card > .card-body .card-titulo h6 {
+.whats-crm .d-cards > .card > .card-body .card-titulo #d-exibir h6 {
   font-weight: bolder;
 }
 
-.whats-crm .d-cards > .card > .card-body .card-titulo .btn-link {
+.whats-crm .d-cards > .card > .card-body .card-titulo #d-exibir .btn-link {
   color: #000000;
 }
 
-.whats-crm .d-cards > .card > .card-body .card-titulo .dropdown-menu {
+.whats-crm .d-cards > .card > .card-body .card-titulo #d-exibir .dropdown-menu {
   background-color: transparent;
   border: none;
   padding: 0;
 }
 
-.whats-crm .d-cards > .card > .card-body .card-titulo .dropdown-menu .dropdown-item {
+.whats-crm .d-cards > .card > .card-body .card-titulo #d-exibir .dropdown-menu .dropdown-item {
   background-color: rgba(0, 0, 0, 0.75);
   border-radius: 5px;
   color: white;
   margin-bottom: 2px;
 }
 
-.whats-crm .d-cards > .card > .card-body .card-titulo .dropdown-menu .dropdown-item:hover {
+.whats-crm .d-cards > .card > .card-body .card-titulo #d-exibir .dropdown-menu .dropdown-item:hover {
   cursor: pointer;
   margin-left: 10px;
 }

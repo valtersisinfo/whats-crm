@@ -20,7 +20,6 @@ $(document).ready(function () {
   });
 
   let VExisteContato = setInterval(function(e) {
-    console.log("e", e);
     if ($("._2nY6U.vq6sj").length != 0 && $("body").attr("idusuario") != undefined) {
       clearInterval(VExisteContato);
 
@@ -161,32 +160,74 @@ $(document).ready(function () {
           },
           dataType: "json",
           success: function (response) {
-            //console.log("response", response);
+            console.log("response", response);
             for (let i = 0; i < response.length; i++) {
               const e = response[i];
               $(".d-cards").append("<div id='d-" + e.id + "' class='card lista'>"+
                 "<div class='card-body p-1'>" +
-                "<div class='card-titulo mb-1'>" +
-                "<div>" +
-                "<button id='b-alerta' type='button' class='btn btn-warning b-alerta' style='display:none;'>" +
-                "<i class='fa-solid fa-bell'></i> <span></span>" +
-                "</button>" +
+                  "<div class='card-titulo mb-1'>" +
+                    "<div id='d-exibir'>" +
+                      "<div>" +
+                        "<button id='b-alerta' type='button' class='btn btn-warning b-alerta' style='display:none;'>" +
+                          "<i class='fa-solid fa-bell'></i> <span></span>" +
+                        "</button>" +
+                      "</div>" +
+                      "<h6 class='card-title text-center mb-0'>" + e.nome + "</h6>" +
+                      "<button id='b-configuracao-" + e.id + "' type='button' class='btn btn-link b-configuracao' data-bs-toggle='dropdown' aria-expanded='false'>" +
+                        "<ul class='dropdown-menu' aria-labelledby='b-configuracao-" + e.id + "'>" +
+                          "<li><a id='a-renomear' value='" + e.id + "' class='dropdown-item'><i class='fas fa-edit'></i> Renomear lista</a></li>" +
+                          "<li><a id='a-deletar' value='" + e.id + "' class='dropdown-item'><i class='fas fa-trash-alt'></i> Deletar lista</a></li>" +
+                          "<li><a id='a-esconder' class='dropdown-item'><i class='fas fa-eye-slash'></i> Esconder todos</a></li>" +
+                          "<li><a id='a-mostrar' class='dropdown-item' style='display: none;'><i class='fas fa-eye'></i> Mostrar todos</a></li>" +
+                          "<li><a id='a-marcar' class='dropdown-item'><i class='fas fa-bell-slash'></i> Marcar todos como lido</a></li>" +
+                        "</ul>" +
+                        "<i class='fa-solid fa-ellipsis'></i>" +
+                      "</button>" +
+                    "</div>" +
+                    "<div id='d-renomear' style='display: none;'>" +
+                      "<div class='input-group'>" +
+                        "<input id='i-renomear' aria-describedby='b-renomear' type='text' class='form-control' placeholder='" + e.nome + "' aria-label='" + e.nome + "'>" +
+                        "<button id='b-renomear' class='btn btn-outline-secondary' type='button' value='" + e.id + "'><i class='fas fa-save'></i></button>" +
+                      "</div>" +
+                    "</div>" +
+                  "</div>" +
+                  "<div class='d-contatos'>" +
+                  "</div>" +
                 "</div>" +
-                "<h6 class='card-title text-center mb-0'>" + e.nome + "</h6>" +
-                "<button id='b-configuracao-" + e.id + "' type='button' class='btn btn-link b-configuracao' data-bs-toggle='dropdown' aria-expanded='false'>" +
-                "<ul class='dropdown-menu' aria-labelledby='b-configuracao-" + e.id + "'>" +
-                "<li><a id='a-deletar' value='" + e.id + "' class='dropdown-item'><i class='fas fa-trash-alt'></i> Deletar lista</a></li>" +
-                "<li><a id='a-esconder' class='dropdown-item'><i class='fas fa-eye-slash'></i> Esconder todos</a></li>" +
-                "<li><a id='a-mostrar' class='dropdown-item' style='display: none;'><i class='fas fa-eye'></i> Mostrar todos</a></li>" +
-                "<li><a id='a-marcar' class='dropdown-item'><i class='fas fa-bell-slash'></i> Marcar todos como lido</a></li>" +
-                "</ul>" +
-                "<i class='fa-solid fa-ellipsis'></i>" +
-                "</button>" +
-                "</div>" +
-                "<div class='d-contatos'>" +
-                "</div>" +
-                "</div>" +
-                "</div>");
+              "</div>");
+            }
+
+            // Pega conversas no storage 
+            let cardsStorage = localStorage.getItem("cards");
+            if(cardsStorage){ 
+              cardsStorage = JSON.parse(cardsStorage);
+              console.log("cardsStorage", cardsStorage);
+              cardsStorage.map(card => {
+                if(card.listaId){
+                  $(".d-cards .d-contatos #" + card.VId).remove();
+                  $("#"+card.listaId+" .d-contatos").append("<div id='" + card.VId +"' class='card d-contato mb-1'>" +
+                    "<div class='card-body p-1'>" +
+                    "<div class='d-titulo'>" +
+                    "<img id='i-foto' src='" + card.VFoto + "' alt='" + card.VNome+ "'>" +
+                    "<p id='p-nome' class='p-nome'>" + card.VNome + "</p>" +
+                    "<button id='b-configuracao' type='button' class='btn btn-link'>" +
+                    "<i class='fa-solid fa-ellipsis'></i>" +
+                    "</button>" +
+                    "</div>" +
+                    "<div class='d-conteudo'>" +
+                    "<div>" +
+                    "<p id='p-ultima' class='p-ultima'>" + card.VUltima + "</p>" +
+                    "<p id='p-tempo' class='p-tempo'>" + card.VTempo + "</p>" +
+                    "</div>" +
+                    "<div id='d-alerta' alerta='" + (card.VAlerta == "true") + "'>" +
+                    (card.VAlerta == "true" ? "<button id='b-alerta' type='button' class='btn btn-warning b-alerta' style='display: block;'><i class='fa-solid fa-bell'></i></button>" : "") +
+                    "</div>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>");
+                  $(".d-cards .d-contatos .d-contato").prop("draggable", true);
+                }
+              });
             }
           }
         });
@@ -211,6 +252,7 @@ $(document).ready(function () {
 
         // Solta o contato
         $(".d-cards").on("drop", ".d-contatos", function(event) {
+          const listaId = event.target.parentElement.parentElement.id; 
           const VId = event.originalEvent.dataTransfer.getData("id");
           const VNome = event.originalEvent.dataTransfer.getData("nome");
           const VFoto = event.originalEvent.dataTransfer.getData("foto");
@@ -221,27 +263,57 @@ $(document).ready(function () {
           $(".d-cards .d-contatos #" + VId).remove();
 
           $(this).append("<div id='" + VId +"' class='card d-contato mb-1'>" +
-          "<div class='card-body p-1'>" +
-          "<div class='d-titulo'>" +
-          "<img id='i-foto' src='" + VFoto + "' alt='" + VNome+ "'>" +
-          "<p id='p-nome' class='p-nome'>" + VNome + "</p>" +
-          "<button id='b-configuracao' type='button' class='btn btn-link'>" +
-          "<i class='fa-solid fa-ellipsis'></i>" +
-          "</button>" +
-          "</div>" +
-          "<div class='d-conteudo'>" +
-          "<div>" +
-          "<p id='p-ultima' class='p-ultima'>" + VUltima + "</p>" +
-          "<p id='p-tempo' class='p-tempo'>" + VTempo + "</p>" +
-          "</div>" +
-          "<div id='d-alerta' alerta='" + (VAlerta == "true") + "'>" +
-          (VAlerta == "true" ? "<button id='b-alerta' type='button' class='btn btn-warning b-alerta' style='display: block;'><i class='fa-solid fa-bell'></i></button>" : "") +
-          "</div>" +
-          "</div>" +
-          "</div>" +
-          "</div>");
+            "<div class='card-body p-1'>" +
+            "<div class='d-titulo'>" +
+            "<img id='i-foto' src='" + VFoto + "' alt='" + VNome+ "'>" +
+            "<p id='p-nome' class='p-nome'>" + VNome + "</p>" +
+            "<button id='b-configuracao' type='button' class='btn btn-link'>" +
+            "<i class='fa-solid fa-ellipsis'></i>" +
+            "</button>" +
+            "</div>" +
+            "<div class='d-conteudo'>" +
+            "<div>" +
+            "<p id='p-ultima' class='p-ultima'>" + VUltima + "</p>" +
+            "<p id='p-tempo' class='p-tempo'>" + VTempo + "</p>" +
+            "</div>" +
+            "<div id='d-alerta' alerta='" + (VAlerta == "true") + "'>" +
+            (VAlerta == "true" ? "<button id='b-alerta' type='button' class='btn btn-warning b-alerta' style='display: block;'><i class='fa-solid fa-bell'></i></button>" : "") +
+            "</div>" +
+            "</div>" +
+            "</div>" +
+            "</div>");
 
           $(".d-cards .d-contatos .d-contato").prop("draggable", true);
+
+          let cards = [];
+          let cardAtual = {
+            listaId: listaId,
+            VId: event.originalEvent.dataTransfer.getData("id"),
+            VNome: event.originalEvent.dataTransfer.getData("nome"),
+            VFoto: event.originalEvent.dataTransfer.getData("foto"),
+            VUltima: event.originalEvent.dataTransfer.getData("ultima"),
+            VTempo: event.originalEvent.dataTransfer.getData("tempo"),
+            VAlerta: event.originalEvent.dataTransfer.getData("alerta"),
+          };
+          //localStorage.getItem("cards");
+
+          // Pega conversas salvas
+          let cardsStorage = localStorage.getItem("cards");
+          if(cardsStorage) cards = JSON.parse(cardsStorage);
+
+          // Remove o card se já existe
+          if(cards){
+            cards = cards.filter(card => {
+              if(VId != card.VId) return card;
+            });
+          }
+
+          // Add na lista nova
+          cards.push(cardAtual);
+          console.log(cards);
+
+          // Salva no storage
+          localStorage.setItem("cards", JSON.stringify(cards));  
         });
 
         // Clica no contato
@@ -296,7 +368,7 @@ $(document).ready(function () {
         });
 
         let VContLista = 0;
-        $("#b-salvar").on("click", function(){
+        $(".d-adicionar #b-salvar").on("click", function(){
           if ($("#i-salvar").val() != "")
           {
             $.ajax({
@@ -312,21 +384,30 @@ $(document).ready(function () {
                 $(".d-cards").append("<div id='d-" + e.id + "' class='card lista'>"+
                   "<div class='card-body p-1'>" +
                   "<div class='card-titulo mb-1'>" +
-                  "<div>" +
-                  "<button id='b-alerta' type='button' class='btn btn-warning b-alerta' style='display:none;'>" +
-                  "<i class='fa-solid fa-bell'></i> <span></span>" +
-                  "</button>" +
-                  "</div>" +
-                  "<h6 class='card-title text-center mb-0'>" + e.nome + "</h6>" +
-                  "<button id='b-configuracao-" + e.id + "' type='button' class='btn btn-link b-configuracao' data-bs-toggle='dropdown' aria-expanded='false'>" +
-                  "<ul class='dropdown-menu' aria-labelledby='b-configuracao-" + e.id + "'>" +
-                  "<li><a id='a-deletar' value='" + e.id + "' class='dropdown-item'><i class='fas fa-trash-alt'></i> Deletar lista</a></li>" +
-                  "<li><a id='a-esconder' class='dropdown-item'><i class='fas fa-eye-slash'></i> Esconder todos</a></li>" +
-                  "<li><a id='a-mostrar' class='dropdown-item' style='display: none;'><i class='fas fa-eye'></i> Mostrar todos</a></li>" +
-                  "<li><a id='a-marcar' class='dropdown-item'><i class='fas fa-bell-slash'></i> Marcar todos como lido</a></li>" +
-                  "</ul>" +
-                  "<i class='fa-solid fa-ellipsis'></i>" +
-                  "</button>" +
+                    "<div id='d-exibir'>" +
+                      "<div>" +
+                      "<button id='b-alerta' type='button' class='btn btn-warning b-alerta' style='display:none;'>" +
+                      "<i class='fa-solid fa-bell'></i> <span></span>" +
+                      "</button>" +
+                      "</div>" +
+                      "<h6 class='card-title text-center mb-0'>" + e.nome + "</h6>" +
+                      "<button id='b-configuracao-" + e.id + "' type='button' class='btn btn-link b-configuracao' data-bs-toggle='dropdown' aria-expanded='false'>" +
+                      "<ul class='dropdown-menu' aria-labelledby='b-configuracao-" + e.id + "'>" +
+                      "<li><a id='a-renomear' value='" + e.id + "' class='dropdown-item'><i class='fas fa-edit'></i> Renomear lista</a></li>" +
+                      "<li><a id='a-deletar' value='" + e.id + "' class='dropdown-item'><i class='fas fa-trash-alt'></i> Deletar lista</a></li>" +
+                      "<li><a id='a-esconder' class='dropdown-item'><i class='fas fa-eye-slash'></i> Esconder todos</a></li>" +
+                      "<li><a id='a-mostrar' class='dropdown-item' style='display: none;'><i class='fas fa-eye'></i> Mostrar todos</a></li>" +
+                      "<li><a id='a-marcar' class='dropdown-item'><i class='fas fa-bell-slash'></i> Marcar todos como lido</a></li>" +
+                      "</ul>" +
+                      "<i class='fa-solid fa-ellipsis'></i>" +
+                      "</button>" +
+                    "</div>" +
+                    "<div id='d-renomear' style='display:none'>" +
+                      "<div class='input-group'>" +
+                        "<input id='i-renomear' aria-describedby='b-renomear' type='text' class='form-control' placeholder='" + e.nome + "' aria-label='" + e.nome + "'>" +
+                        "<button id='b-renomear' class='btn btn-outline-secondary' type='button' value='" + e.id + "'><i class='fas fa-save'></i></button>" +
+                      "</div>" +
+                    "</div>" +
                   "</div>" +
                   "<div class='d-contatos'>" +
                   "</div>" +
@@ -341,6 +422,54 @@ $(document).ready(function () {
           }
         });
 
+        $(".d-cards").on("click", "#a-renomear", function(){
+          $("#d-" + $(this).attr("value") + " #d-exibir").hide();
+          $("#d-" + $(this).attr("value") + " #d-renomear").show();
+          $("#d-" + $(this).attr("value") + " #i-renomear").trigger("focus");
+        });
+
+        $(".d-cards").on("click", "#d-renomear #b-renomear", function(){
+          // Elementos
+          let VElTitulo = $(this).parents(".card-titulo").find(".card-title");
+          let VElDivRenomear = $(this).parents("#d-renomear");
+          let VElDivExibir = $(this).parents(".card-titulo").find("#d-exibir");
+          let VElInRenomear = VElDivRenomear.find("#i-renomear");
+
+          // Atributos
+          let VId = $(this).attr("value");
+          console.log("VId", VId);
+          let VNome = VElInRenomear.val();
+          if (VNome == "")
+            VNome = VElInRenomear.attr("placeholder");
+
+          $.ajax({
+            type: "PUT",
+            url: "https://www.acordarcedo.com/ac-backend/whatsapp-crm/lista/" + VId,
+            data: JSON.stringify({
+              nome: VNome
+            }),
+            dataType: "json",
+            success: function (response) {
+              if (response.status != undefined)
+              {
+                VElInRenomear.val(response.nome);
+                VElInRenomear.attr("placeholder", response.nome);
+                VElInRenomear.attr("aria-label", response.nome);
+                VElTitulo.html(response.nome);
+                VElDivExibir.show();
+                VElDivRenomear.hide();
+              }
+            }
+          });
+
+        });
+
+        $(".d-cards").on("click", "#a-renomear", function(){
+          $("#d-" + $(this).attr("value") + " #d-exibir").hide();
+          $("#d-" + $(this).attr("value") + " #d-renomear").show();
+          $("#d-" + $(this).attr("value") + " #i-renomear").focus();
+        });
+
         $(".d-cards").on("click", "#a-deletar", function(){
           let deletar = $(this).attr("value");
           $.ajax({
@@ -351,7 +480,6 @@ $(document).ready(function () {
             success: function (response) {
               $(".d-cards #d-inbox .d-contatos").append($(".d-cards #d-" + deletar + " .d-contatos").html());
               $(".d-cards #d-" + deletar).remove();
-
             }
           });
         });
